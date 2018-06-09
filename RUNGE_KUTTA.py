@@ -1,5 +1,6 @@
 #!/usr/bin/python3.6
 #coding: utf-8
+import sys
 
 class Runge_Kutta():
 
@@ -22,15 +23,15 @@ class Runge_Kutta():
 
         return d_y
 
-### MAIN ###
+### MAIN ### ___ SET 0 - 2 - 1 - 5
 #X[0]
-x0 = 0
+x0 = float(sys.argv[1])
 #X[n]
-xn = 2
+xn = float(sys.argv[2])
 #PASSO
-h = 1
+h = float(sys.argv[3])
 #Y0 = Y[X0]
-Y0 = 5
+Y0 = float(sys.argv[4])
 
 
 #OBJETO RK
