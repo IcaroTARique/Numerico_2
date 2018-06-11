@@ -68,7 +68,7 @@ class Interp_Newton():
         plt.ylabel("Y")
         plt.grid(True)
         plt.savefig('img.png')
-        plt.show()
+        #plt.show()
 
 ### MAIN ###
 x_plot = []
