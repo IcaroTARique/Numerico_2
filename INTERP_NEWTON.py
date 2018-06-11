@@ -44,10 +44,12 @@ class Interp_Newton():
 
         return temp
 
+
 ### MAIN ###
 #x = [1,3,4,5]
 #y = [0,6,24,60]
-
+#X_inicial = sys.argv[5]
+#X_final = sys.argv[6]
 x = Interp_Newton.LeArquivo(sys.argv[1])
 y = Interp_Newton.LeArquivo(sys.argv[2])
 k = []
@@ -109,6 +111,9 @@ RESPOSTA_FINAL = IN.lista_y[0] + parcela_semi
 
 print(RESPOSTA_FINAL)
 
+
+### PRINTS E ARQUIVOS
+
 print("P(x)=f(x[0])", end="")
 l = len(IN.lista_x)
 for i in range (len(IN.lista_x)-1,0,-1):
@@ -130,3 +135,34 @@ for i in range (len(IN.lista_x)-1,0,-1):
         print("(x-",IN.lista_x[j],")", end="")
     print(K_final[l-i-1], end="")
 print("\n")
+
+
+arq = open("arquivo_saida_expressao_generalizada_IN.txt", 'w')
+
+arq.write("P(x)=")
+arq.write(str(IN.lista_y[0]))
+for i in range (len(IN.lista_x)-1,0,-1):
+    arq.write("+")
+    for j in range (len(IN.lista_x)-i):
+        arq.write("(x-x[")
+        arq.write(str(j))
+        arq.write("])")
+    arq.write("K[")
+    arq.write(str(l-i))
+    arq.write("]")
+
+arq.close()
+
+arq = open("arquivo_saida_expressao_IN.txt", 'w')
+
+arq.write("P(x)=")
+arq.write(str(IN.lista_y[0]))
+for i in range (len(IN.lista_x)-1,0,-1):
+    arq.write("+")
+    for j in range (len(IN.lista_x)-i):
+        arq.write("(x-")
+        arq.write(str(IN.lista_x[j]))
+        arq.write(")")
+    arq.write(str(K_final[l-i-1]))
+
+arq.close()
