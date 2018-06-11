@@ -1,6 +1,7 @@
 #!/usr/bin/python3.6
 #coding: utf-8
 import sys
+import matplotlib.pyplot as plt
 
 class Interp_Newton():
 
@@ -44,73 +45,118 @@ class Interp_Newton():
 
         return temp
 
+    def plotagem(self,x, y):
+
+        dataset = open('plotGrafico.txt','r')
+
+        for line in dataset:
+            line = line.strip()
+            X, Y = line.split(',')
+
+            x.append(float(X))
+            y.append(float(Y))
+
+        dataset.close()
+
+        print(x)
+        print(y)
+
+        plt.plot(x, y)
+
+        plt.title("Gráfico do Rendimento")
+        plt.xlabel("Reais")
+        plt.ylabel("Meses")
+        plt.grid(True)
+        plt.savefig('img.png')
+        plt.show()
 
 ### MAIN ###
+x_plot = []
+y_plot = []
 #x = [1,3,4,5]
 #y = [0,6,24,60]
-#X_inicial = sys.argv[5]
-#X_final = sys.argv[6]
-x = Interp_Newton.LeArquivo(sys.argv[1])
-y = Interp_Newton.LeArquivo(sys.argv[2])
-k = []
-K_final = []
-IN = Interp_Newton(x,y)
+X_inicial = float(sys.argv[4])
+X_final = float(sys.argv[5])
+passo = float(sys.argv[6])
+lista_final = []
+lista_x_inicial = []
+while X_inicial <= X_final:
+    #CRIA LISTA DE X PARA PLOTAR
+    lista_x_inicial.append(X_inicial)
 
-UP = []
-DOWN = []
-#Precisão da casa decimal
-precision = int(sys.argv[4])
-X_value = float(sys.argv[3])
-X_value = round(X_value,precision)
-#PRIMEIRO K
-for i in range(1,len(IN.lista_x)):
+    x = Interp_Newton.LeArquivo(sys.argv[1])
+    y = Interp_Newton.LeArquivo(sys.argv[2])
+    k = []
+    K_final = []
+    IN = Interp_Newton(x,y)
 
-    k.append(IN.Delta(i,1,IN.lista_y, IN.lista_x))
-
-#LISTA QUE ARMAZENA OS K[i] QUE SERÃO USADOS NO P(x)
-print("K : ",k)
-K_final.append(round(k[0],precision))
-j = 2
-
-#K's RESTANTES
-while j != (len(IN.lista_x)):
     UP = []
     DOWN = []
-    for i in range(1,len(k),1):
-        UP.append(IN.Delta_up(k,i,1))
+    #Precisão da casa decimal
+    precision = int(sys.argv[3])
+    #X_value = float(sys.argv[3])
+    X_value = round(X_inicial,precision)
+    #PRIMEIRO K
+    for i in range(1,len(IN.lista_x)):
 
-    for i in range(len(k)-1):
-        DOWN.append(IN.Delta_down(IN.lista_x,i,j))
+        k.append(IN.Delta(i,1,IN.lista_y, IN.lista_x))
 
-    k = []
-    for i in range(len(UP)):
-        k.append(round(UP[i]/DOWN[i],precision))
-        print("******RESPOSTA: ",round(UP[i]/DOWN[i],precision))
-    K_final.append(k[0])
-    j += 1
-    print(K_final)
+    #LISTA QUE ARMAZENA OS K[i] QUE SERÃO USADOS NO P(x)
+    print("K : ",k)
+    K_final.append(round(k[0],precision))
+    j = 2
 
-i = 0
-parcela_2 = []
+    #K's RESTANTES
+    while j != (len(IN.lista_x)):
+        UP = []
+        DOWN = []
+        for i in range(1,len(k),1):
+            UP.append(IN.Delta_up(k,i,1))
 
-while i <= len(K_final)-1:
-    parcela_2.append(IN.Interpolation(IN.lista_x, X_value, i))
-    print("IND ",parcela_2[i])
-    i += 1
+        for i in range(len(k)-1):
+            DOWN.append(IN.Delta_down(IN.lista_x,i,j))
 
-print(parcela_2)
+        k = []
+        for i in range(len(UP)):
+            k.append(round(UP[i]/DOWN[i],precision))
+            print("******RESPOSTA: ",round(UP[i]/DOWN[i],precision))
+        K_final.append(k[0])
+        j += 1
+        print(K_final)
 
-parcela_semi = 0
-i = 0
-while i < len(K_final):
-    print(i)
-    parcela_semi += (parcela_2[i]*K_final[i])
-    i += 1
+    i = 0
+    parcela_2 = []
 
-RESPOSTA_FINAL = IN.lista_y[0] + parcela_semi
+    while i <= len(K_final)-1:
+        parcela_2.append(IN.Interpolation(IN.lista_x, X_value, i))
+        print("IND ",parcela_2[i])
+        i += 1
 
-print(RESPOSTA_FINAL)
+    print(parcela_2)
 
+    parcela_semi = 0
+    i = 0
+    while i < len(K_final):
+        print(i)
+        parcela_semi += (parcela_2[i]*K_final[i])
+        i += 1
+
+    RESPOSTA_FINAL = IN.lista_y[0] + parcela_semi
+    print(RESPOSTA_FINAL)
+    lista_final.append(RESPOSTA_FINAL)
+
+    X_inicial += passo
+
+print(lista_final)
+
+arq = open("plotGrafico.txt", 'w')
+for i in range (len(lista_final)):
+    arq.write(str(lista_x_inicial[i])+","+str(round(lista_final[i],precision))+"\n")
+arq.close()
+
+### GRAFICO
+
+IN.plotagem(x_plot,y_plot)
 
 ### PRINTS E ARQUIVOS
 
