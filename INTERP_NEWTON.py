@@ -63,9 +63,9 @@ class Interp_Newton():
 
         plt.plot(x, y)
 
-        plt.title("Gráfico do Rendimento")
-        plt.xlabel("Reais")
-        plt.ylabel("Meses")
+        plt.title("Gráfico da Interpolação de Newton")
+        plt.xlabel("X")
+        plt.ylabel("Y")
         plt.grid(True)
         plt.savefig('img.png')
         plt.show()
