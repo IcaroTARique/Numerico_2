@@ -49,9 +49,7 @@ class Interp_Newton():
 #y = [0,6,24,60]
 
 x = Interp_Newton.LeArquivo(sys.argv[1])
-print ("X = ",x)
 y = Interp_Newton.LeArquivo(sys.argv[2])
-print ("Y = ",y)
 k = []
 K_final = []
 IN = Interp_Newton(x,y)
@@ -110,3 +108,25 @@ while i < len(K_final):
 RESPOSTA_FINAL = IN.lista_y[0] + parcela_semi
 
 print(RESPOSTA_FINAL)
+
+print("P(x)=f(x[0])", end="")
+l = len(IN.lista_x)
+for i in range (len(IN.lista_x)-1,0,-1):
+    print ("+", end="")
+    for j in range (len(IN.lista_x)-i):
+
+        print("(x-x[",j,"])", end="")
+    print("K[",l-i,"]", end="")
+
+print ("\n\nÉ IGUAL A EXPRESSÃO\n")
+
+
+print("P(x)=", IN.lista_y[0], end="")
+
+for i in range (len(IN.lista_x)-1,0,-1):
+    print ("+", end="")
+    for j in range (len(IN.lista_x)-i):
+
+        print("(x-",IN.lista_x[j],")", end="")
+    print(K_final[l-i-1], end="")
+print("\n")
