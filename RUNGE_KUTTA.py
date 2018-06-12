@@ -20,9 +20,10 @@ class Runge_Kutta():
     def EDO(self,x,y):
 
         d_y = (-(y**2)+24*x)/5
+        #d_y = (x - y + 2)
 
         return d_y
-
+#################### X0  XN  H   Y0
 ### MAIN ### ___ SET 0 - 2 - 1 - 5
 #X[0]
 x0 = float(sys.argv[1])
@@ -58,3 +59,7 @@ for k in range (len(lista_valores_x)-1):
 print(lista_valores_y)
 
 print("RESPOSTA Y[",len(lista_valores_x)-1,"] = ",lista_valores_y[len(lista_valores_x)-1])
+
+arq = open("RK_resposta_Yn.txt", 'w')
+arq.write("Y["+str(len(lista_valores_x)-1)+"] = "+str(lista_valores_y[len(lista_valores_x)-1]))
+arq.close()
